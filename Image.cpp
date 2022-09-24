@@ -2,6 +2,7 @@
 
 #include <cassert>
 #include "Image.h"
+#include <string>
 
 // REQUIRES: img points to an Image
 //           0 < width && width <= MAX_MATRIX_WIDTH
@@ -10,7 +11,8 @@
 // EFFECTS:  Initializes the Image with the given width and height.
 // NOTE:     Do NOT use new or delete here.
 void Image_init(Image* img, int width, int height) {
-  assert(false); // TODO Replace with your implementation!
+  img->width = width;
+  img->height = height;
 }
 
 // REQUIRES: img points to an Image
@@ -22,7 +24,17 @@ void Image_init(Image* img, int width, int height) {
 // NOTE:     See the project spec for a discussion of PPM format.
 // NOTE:     Do NOT use new or delete here.
 void Image_init(Image* img, std::istream& is) {
-  assert(false); // TODO Replace with your implementation!
+  char space;
+  string filetype;
+  string width;
+  string height;
+  getline(is, filetype);
+  is >> width >> space >> height;
+  img->width = width;
+  img->height = height;
+  // make sure ppm reads in from t=next line at the end of a line.
+  for (int i = 0; i < )
+
 }
 
 // REQUIRES: img points to a valid Image
