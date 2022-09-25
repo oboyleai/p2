@@ -9,6 +9,8 @@
 // MODIFIES: *mat
 // EFFECTS:  Initializes *mat as a Matrix with the given width and height.
 // NOTE:     Do NOT use new or delete here.
+
+
 void Matrix_init(Matrix* mat, int width, int height) {
 mat->height = height;
 mat->width = width;
@@ -22,11 +24,13 @@ mat->width = width;
 //           Each element is followed by a space and each row is followed
 //           by a newline. This means there will be an "extra" space at
 //           the end of each line.
+
+
 void Matrix_print(const Matrix* mat, std::ostream& os) {
-  os << Matrix_width(mat) << " " << Matrix_height(mat) << endl;
+  os << Matrix_width(mat) << " " << Matrix_height(mat) << "\n";
   for (int row = 0; row < mat->height; row++) {
     for (int col = 0; col < mat->width; col++) {
-      os << *(Matrix_at(mat, row, col)) << " " << endl;
+      os << *(Matrix_at(mat, row, col)) << " " << "\n";
     }
   }
 }
@@ -62,6 +66,8 @@ int Matrix_row(const Matrix* mat, const int* ptr) {
 int Matrix_column(const Matrix* mat, const int* ptr) {
   for (int row = 0; row < mat->height; row++) {
     for (int col = 0; col < mat->width; col++) {
+      // checks every spot in given matrix to see if it 
+      // is equal to the pointer
       if (Matrix_at(mat, row, col) == ptr) {
         return col;
       }
@@ -78,6 +84,7 @@ int Matrix_column(const Matrix* mat, const int* ptr) {
 // EFFECTS:  Returns a pointer to the element in the Matrix
 //           at the given row and column.
 int* Matrix_at(Matrix* mat, int row, int column) {
+  //equation to reach row and col of a matrix
   int* ptr = mat->data + (MAX_MATRIX_HEIGHT * row + column);
   return ptr;
 }
@@ -111,15 +118,19 @@ void Matrix_fill(Matrix* mat, int value) {
 //           the given value. These are all elements in the first/last
 //           row or the first/last column.
 void Matrix_fill_border(Matrix* mat, int value) {
+  // fills top row
   for (int col = 0; col < mat->width; col++) {
     *(Matrix_at(mat, 1, col)) = value;
   }
+  // fills bottom row
   for (int col = 0; col < mat->width; col++) {
     *(Matrix_at(mat, Matrix_height(mat), col)) = value;
   }
+  // fills first column
   for (int row = 0; row < mat->height; row++) {
     *(Matrix_at(mat, row, 1)) = value;
   }
+  // fills last col
   for (int row = 0; row < mat->height; row++) {
     *(Matrix_at(mat, row, Matrix_width(mat))) = value;
   }

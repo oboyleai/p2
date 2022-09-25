@@ -24,16 +24,29 @@ void Image_init(Image* img, int width, int height) {
 // NOTE:     See the project spec for a discussion of PPM format.
 // NOTE:     Do NOT use new or delete here.
 void Image_init(Image* img, std::istream& is) {
+  string rgbMax;
   char space;
   string filetype;
   string width;
   string height;
   getline(is, filetype);
   is >> width >> space >> height;
-  img->width = width;
-  img->height = height;
-  // make sure ppm reads in from t=next line at the end of a line.
-  for (int i = 0; i < )
+  img->width = stoi(width);
+  img->height = stoi(height);
+  getline(is, rgbMax);
+  
+  Matrix_init(&(img->red_channel), img->width, img->height);
+  Matrix_init(&(img->green_channel), img->width, img->height);
+  Matrix_init(&(img->blue_channel), img->width, img->height);
+  for (int row = 0; row < img->height ; row++) {
+    //if end line???
+    for (int col = 0; col < img->width; col++) {
+      string 
+      is >> Matrix_at(&(img->red_channel), row, col) >> space;
+      is >> Matrix_at(&(img->green_channel), row, col) >> space;
+      is >> Matrix_at(&(img->blue_channel), row, col) >> space;
+    }
+  }
 
 }
 
@@ -57,13 +70,13 @@ void Image_print(const Image* img, std::ostream& os) {
 // REQUIRES: img points to a valid Image
 // EFFECTS:  Returns the width of the Image.
 int Image_width(const Image* img) {
-  assert(false); // TODO Replace with your implementation!
+  return img->width;
 }
 
 // REQUIRES: img points to a valid Image
 // EFFECTS:  Returns the height of the Image.
 int Image_height(const Image* img) {
-  assert(false); // TODO Replace with your implementation!
+  return img->height;
 }
 
 // REQUIRES: img points to a valid Image
