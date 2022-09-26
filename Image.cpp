@@ -3,7 +3,10 @@
 #include <cassert>
 #include "Image.h"
 #include <string>
-
+#include <iostream>
+#include <fstream>
+#include <cstdlib>
+using namespace std;
 // REQUIRES: img points to an Image
 //           0 < width && width <= MAX_MATRIX_WIDTH
 //           0 < height && height <= MAX_MATRIX_HEIGHT
@@ -29,8 +32,12 @@ void Image_init(Image* img, std::istream& is) {
   string filetype;
   string width;
   string height;
+  string rVal;
+  string gVal;
+  string bVal;
+  // reads the first line of the ppm file which is the file type
   getline(is, filetype);
-  is >> width >> space >> height;
+  is >> width >> height;
   img->width = stoi(width);
   img->height = stoi(height);
   getline(is, rgbMax);
@@ -38,14 +45,12 @@ void Image_init(Image* img, std::istream& is) {
   Matrix_init(&(img->red_channel), img->width, img->height);
   Matrix_init(&(img->green_channel), img->width, img->height);
   Matrix_init(&(img->blue_channel), img->width, img->height);
-  for (int row = 0; row < img->height ; row++) {
-    //if end line???
-    for (int col = 0; col < img->width; col++) {
-      string 
-      is >> Matrix_at(&(img->red_channel), row, col) >> space;
-      is >> Matrix_at(&(img->green_channel), row, col) >> space;
-      is >> Matrix_at(&(img->blue_channel), row, col) >> space;
-    }
+  // test if while loops works
+  while (is >> rVal >> gVal >> bVal) {
+    // miles finish this you said it would take you 5
+    // minutes it was soooo easy
+    // just read in each rgb value into redchannel greenchannel 
+    // bluechannel respectivly
   }
 
 }
@@ -64,7 +69,22 @@ void Image_init(Image* img, std::istream& is) {
 //           "extra" space at the end of each line. See the project spec
 //           for an example.
 void Image_print(const Image* img, std::ostream& os) {
-  assert(false); // TODO Replace with your implementation!
+  os << "P3" << endl;
+  os << Image_width(img) << " " << Image_height(img) << endl;
+  os << "255" << endl;
+  for (int row = 0; row < img->height; row++) {
+    // only ends the line after printing the first row
+    if (row != 0) {
+      os << endl;
+    }
+    // prints body of the ppm file
+    for (int col = 0; col < img->width; col++) {
+      os << Matrix_at(&(img->red_channel), row, col) << " ";
+      os << Matrix_at(&(img->green_channel), row, col) << " ";
+      os << Matrix_at(&(img->blue_channel), row, col) << " ";
+    }
+    
+  }
 }
 
 // REQUIRES: img points to a valid Image
@@ -84,7 +104,12 @@ int Image_height(const Image* img) {
 //           0 <= column && column < Image_width(img)
 // EFFECTS:  Returns the pixel in the Image at the given row and column.
 Pixel Image_get_pixel(const Image* img, int row, int column) {
-  assert(false); // TODO Replace with your implementation!
+  int rVal;
+  int gVal;
+  int bVal;
+  rVal = *(Matrix_at(&(img->red_channel), row, column));
+  // finish... what pixel do I aasign if I cannot create one
+
 }
 
 // REQUIRES: img points to a valid Image
@@ -103,3 +128,4 @@ void Image_set_pixel(Image* img, int row, int column, Pixel color) {
 void Image_fill(Image* img, Pixel color) {
   assert(false); // TODO Replace with your implementation!
 }
+
