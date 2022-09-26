@@ -38,6 +38,7 @@ void Image_init(Image* img, std::istream& is) {
   // reads the first line of the ppm file which is the file type
   getline(is, filetype);
   is >> width >> height;
+  
   img->width = stoi(width);
   img->height = stoi(height);
   getline(is, rgbMax);
@@ -104,12 +105,18 @@ int Image_height(const Image* img) {
 //           0 <= column && column < Image_width(img)
 // EFFECTS:  Returns the pixel in the Image at the given row and column.
 Pixel Image_get_pixel(const Image* img, int row, int column) {
+  Pixel p;
   int rVal;
   int gVal;
   int bVal;
   rVal = *(Matrix_at(&(img->red_channel), row, column));
   // finish... what pixel do I aasign if I cannot create one
-
+  p.r = rVal;
+  gVal = *(Matrix_at(&(img->green_channel), row, column));
+  p.g = gVal;
+  bVal = *(Matrix_at(&(img->blue_channel), row, column));
+  p.b = bVal;
+  return p;
 }
 
 // REQUIRES: img points to a valid Image
@@ -119,13 +126,21 @@ Pixel Image_get_pixel(const Image* img, int row, int column) {
 // EFFECTS:  Sets the pixel in the Image at the given row and column
 //           to the given color.
 void Image_set_pixel(Image* img, int row, int column, Pixel color) {
-  assert(false); // TODO Replace with your implementation!
+  *(Matrix_at(&(img->red_channel), row, column)) = color.r;
+  *(Matrix_at(&(img->green_channel), row, column)) = color.g;
+  *(Matrix_at(&(img->blue_channel), row, column)) = color.b;
+
 }
 
 // REQUIRES: img points to a valid Image
 // MODIFIES: *img
 // EFFECTS:  Sets each pixel in the image to the given color.
 void Image_fill(Image* img, Pixel color) {
-  assert(false); // TODO Replace with your implementation!
+  for (int row = 0; row < Image_height(img); row ++) {
+    for (int col = 0; col < img->width; col++) {
+      *(Matrix_at(&(img->red_channel), row, col)) = color.r;
+      *(Matrix_at(&(img->green_channel), row, col)) = color.g;
+      *(Matrix_at(&(img->blue_channel), row, col)) = color.b;
+    }
+  }
 }
-
