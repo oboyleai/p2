@@ -34,7 +34,6 @@ void Matrix_print(const Matrix *mat, std::ostream &os)
       os << *(Matrix_at(mat, row, col)) << " ";
     }
     os << endl;
-    // os << *(Matrix_at(mat, row, col)) << " "
   }
 }
 

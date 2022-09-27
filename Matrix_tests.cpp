@@ -8,6 +8,8 @@
 
 using namespace std;
 
+// make him walk into the bathroom
+
 // Here's a free test for you! Model yours after this one.
 // Test functions have no interface and thus no RMEs, but
 // add a comment like the one here to say what it is testing.
@@ -89,25 +91,8 @@ TEST(testFillBorder4by4)
     }
   }
 
-  //
-  // for (int r = 0; r < h; r += h - 1)
-  // {
-  //   for (int c = 0; c < w; c++)
-  //   {
-  //     cout << "(" << r << ", " << c << "): " << *Matrix_at(mat, r, c) << endl;
+  //@TODO, test that inner border isn't modified
 
-  //     ASSERT_EQUAL(*Matrix_at(mat, r, c), valInitial);
-  //   }
-  // }
-
-  // // tests that inner square isn't modified
-  // for (int r = 1; r < w - 1; r++)
-  // {
-  //   for (int c = 1; c < h - 1; c++)
-  //   {
-  //     ASSERT_NOT_EQUAL(*Matrix_at(mat, r, c), valFill);
-  //   }
-  // }
   delete mat;
 }
 
@@ -179,7 +164,6 @@ TEST(testFillBorder10x2)
 
 TEST(testMaxBasic)
 {
-  // how do you set a value in matrix
   Matrix *mat = new Matrix;
   Matrix_init(mat, 50, 50);
   Matrix_fill(mat, 0);
@@ -191,7 +175,6 @@ TEST(testMaxBasic)
 
 TEST(testMaxNegative)
 {
-  // how do you set a value in matrix
   Matrix *mat = new Matrix;
   Matrix_init(mat, 50, 50);
   Matrix_fill(mat, -8);
@@ -200,6 +183,8 @@ TEST(testMaxNegative)
   ASSERT_EQUAL(Matrix_max(mat), max);
   delete mat;
 }
+
+// test multi max? test no max?
 
 TEST(testWidthBasic)
 {
@@ -232,7 +217,6 @@ TEST(testHeightBasic)
   delete mat; // delete the Matrix
 }
 
-// // how would this work with autograder?
 TEST(testMaxTwoMax)
 {
   // how do you set a value in matrix
@@ -372,6 +356,8 @@ TEST(testMatrixFill3x1)
 }
 
 // helps with using image print
+// this doesn't give us a point on the autograder
+// should I test from file thing
 TEST(testMatrixPrint)
 {
   Matrix *mat = new Matrix;
@@ -392,11 +378,7 @@ TEST(testMatrixPrint)
     correctString += "\n";
   }
   ostringstream os;
-
-  // ostream os;
   Matrix_print(mat, os);
-
-  // ASSERT_EQUAL(os, )
   ASSERT_EQUAL(os.str(), correctString);
 }
 
@@ -430,5 +412,5 @@ TEST(testMatrixCol)
 }
 
 // test something on already initialized yet fucked up matrix
-
+// make him walk to the bathrooms
 TEST_MAIN() // Do NOT put a semicolon here
