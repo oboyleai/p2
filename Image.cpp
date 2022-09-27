@@ -29,22 +29,20 @@ void Image_init(Image *img, int width, int height)
 // NOTE:     Do NOT use new or delete here.
 void Image_init(Image *img, std::istream &is)
 {
-  string rgbMax;
-  string filetype;
-  string width;
-  string height;
-  string rVal;
-  string gVal;
-  string bVal;
+  string rgbVal, emptyPlaceHolder, fileType, width, height, rVal, gVal, bVal;
   // reads the first line of the ppm file which is the file type
-  getline(is, filetype);
+  getline(is, fileType);
   is >> width >> height;
   // converts the width and height which is stored as a string to
   // an int and stores it in the image stuct
   img->width = stoi(width);
   img->height = stoi(height);
+
+  // skips the newline after width and height
+  getline(is, emptyPlaceHolder);
+
   // reads in rgb max value
-  getline(is, rgbMax);
+  getline(is, rgbVal);
 
   Matrix_init(&(img->red_channel), img->width, img->height);
   Matrix_init(&(img->green_channel), img->width, img->height);

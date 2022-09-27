@@ -53,55 +53,16 @@ TEST(test_print_basic)
 
 // make max size tests
 
-// IMPLEMENT YOUR TEST FUNCTIONS HERE
-// You are encouraged to use any functions from Image_test_helpers.h as needed.
-
-// NOTE: The unit test framework tutorial in Lab 2 originally
-// had a semicolon after TEST_MAIN(). Although including and
-// excluding the semicolon are both correct according to the c++
-// standard, the version of g++ we are using reports a warning
-// when there is a semicolon. Therefore do NOT add a semicolon
-// after TEST_MAIN()
-
-// no idea how to test this
-// TEST(testInitWFile)
-// {
-
-//   Image *img = new Image; // create an Image in dynamic memory
-
-//   // const Pixel red = {255, 0, 0};
-//   // const Pixel green = {0, 255, 0};
-//   // const Pixel blue = {0, 0, 255};
-//   // const Pixel white = {255, 255, 255};
-
-//   string fileName = "dog.ppm";
-//   ifstream fin;
-//   // fin.open(fileName);
-//   fin.open(fileName);
-//   Image_init(img, fin);
-//   // ASSERT_EQUAL(Image_equal(img))
-// }
-
-// ba
-
 TEST(testSetGetPixelBasic)
 {
-  Image *img = new Image; // create an Image in dynamic memory
-
+  Image *img = new Image;
   const Pixel white = {255, 255, 255};
-
   Image_init(img, 2, 2);
   Image_set_pixel(img, 1, 1, white);
-
-  // assert(Image_get_pixel(img, 1, 1))
-
   Pixel imgPxl = Image_get_pixel(img, 1, 1);
-
-  ASSERT_EQUAL(imgPxl.r, 255);
-  ASSERT_EQUAL(imgPxl.g, 255);
-  ASSERT_EQUAL(imgPxl.b, 255);
-
-  delete img; // delete the Image
+  bool pixelEquals = Pixel_equal(imgPxl, white);
+  ASSERT_TRUE(pixelEquals);
+  delete img;
 }
 
 TEST(testWidth)
@@ -111,6 +72,7 @@ TEST(testWidth)
   const Pixel ming = {0, 0, 0};
   Image_fill(img, ming);
   ASSERT_EQUAL(Image_width(img), 2);
+  delete img;
 }
 
 TEST(testHeight)
@@ -120,6 +82,7 @@ TEST(testHeight)
   const Pixel ming = {0, 0, 0};
   Image_fill(img, ming);
   ASSERT_EQUAL(Image_height(img), 2);
+  delete img;
 }
 
 // should tests at all pixels?
@@ -135,6 +98,7 @@ TEST(testGetPixel)
   ASSERT_EQUAL(pGet.r, pSet.r);
   ASSERT_EQUAL(pGet.b, pSet.b);
   ASSERT_EQUAL(pGet.g, pSet.g);
+  delete img;
 }
 
 TEST(testImageFIll)
@@ -155,6 +119,7 @@ TEST(testImageFIll)
       ASSERT_TRUE(pixelsEqual);
     }
   }
+  delete img;
 }
 
 TEST(testImageFill1x1)
@@ -164,15 +129,27 @@ TEST(testImageFill1x1)
   Image_init(img, width, height);
   Pixel pFill = {10, 10, 10};
   Image_fill(img, pFill);
-  const Pixel imgPixel = Image_get_pixel(img, 0, 0);
+  Pixel imgPixel = Image_get_pixel(img, 0, 0);
   bool pixelsEqual = Pixel_equal(imgPixel, pFill);
   ASSERT_TRUE(pixelsEqual);
-  // doing it twice because initialization behavior might be weird
-  pFill = {2, 2, 2};
-  pixelsEqual = Pixel_equal(imgPixel, pFill);
-  ASSERT_TRUE(pixelsEqual);
+  delete img;
 }
 
-// use image equals
+// osstream init test using image equals
+
+TEST(testImageInitStream)
+{
+  istringstream is;
+  Image *img = new Image;
+  string perfectImageString =
+      "P3\n2 2\n255\n123 0 36 255 200 8 \n147 99 68 3 164 202 \n";
+  is.str(perfectImageString);
+  Image_init(img, is);
+  ostringstream os;
+  Image_print(img, os);
+  ASSERT_EQUAL(os.str(), perfectImageString);
+  delete img;
+}
+// large data size tests?
 
 TEST_MAIN() // Do NOT put a semicolon here
