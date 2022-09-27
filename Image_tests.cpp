@@ -104,4 +104,75 @@ TEST(testSetGetPixelBasic)
   delete img; // delete the Image
 }
 
+TEST(testWidth)
+{
+  Image *img = new Image;
+  Image_init(img, 2, 2);
+  const Pixel ming = {0, 0, 0};
+  Image_fill(img, ming);
+  ASSERT_EQUAL(Image_width(img), 2);
+}
+
+TEST(testHeight)
+{
+  Image *img = new Image;
+  Image_init(img, 2, 2);
+  const Pixel ming = {0, 0, 0};
+  Image_fill(img, ming);
+  ASSERT_EQUAL(Image_height(img), 2);
+}
+
+// should tests at all pixels?
+TEST(testGetPixel)
+{
+  Image *img = new Image;
+  Image_init(img, 2, 2);
+  const Pixel pFill = {0, 0, 0};
+  Image_fill(img, pFill);
+  const Pixel pSet = {20, 21, 22};
+  Image_set_pixel(img, 1, 1, pSet);
+  const Pixel pGet = Image_get_pixel(img, 1, 1);
+  ASSERT_EQUAL(pGet.r, pSet.r);
+  ASSERT_EQUAL(pGet.b, pSet.b);
+  ASSERT_EQUAL(pGet.g, pSet.g);
+}
+
+TEST(testImageFIll)
+{
+  Image *img = new Image;
+  const int width = 2, height = 2;
+  Image_init(img, width, height);
+  Pixel pFill = {0, 0, 0};
+  Image_fill(img, pFill);
+  bool pixelsEqual;
+  Pixel currPixel;
+  for (int row = 0; row < height; row++)
+  {
+    for (int col = 0; col < width; col++)
+    {
+      currPixel = Image_get_pixel(img, row, col);
+      pixelsEqual = Pixel_equal(currPixel, pFill);
+      ASSERT_TRUE(pixelsEqual);
+    }
+  }
+}
+
+TEST(testImageFill1x1)
+{
+  Image *img = new Image;
+  const int width = 1, height = 1;
+  Image_init(img, width, height);
+  Pixel pFill = {10, 10, 10};
+  Image_fill(img, pFill);
+  const Pixel imgPixel = Image_get_pixel(img, 0, 0);
+  bool pixelsEqual = Pixel_equal(imgPixel, pFill);
+  ASSERT_TRUE(pixelsEqual);
+  // doing it twice because initialization behavior might be weird
+  pFill = {2, 2, 2};
+  pixelsEqual = Pixel_equal(imgPixel, pFill);
+  ASSERT_TRUE(pixelsEqual);
+}
+
+// use image equals
+
 TEST_MAIN() // Do NOT put a semicolon here

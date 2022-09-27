@@ -429,4 +429,6 @@ TEST(testMatrixCol)
   delete mat;
 }
 
+// test something on already initialized yet fucked up matrix
+
 TEST_MAIN() // Do NOT put a semicolon here
