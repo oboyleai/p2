@@ -218,10 +218,10 @@ TEST(testWidthBasic)
   const int width = 3;
   const int height = 5;
   const int value = 42;
-  Matrix_init(mat, 3, 5);
+  Matrix_init(mat, width, height);
   Matrix_fill(mat, value);
 
-  ASSERT_EQUAL(Matrix_width(mat), 3);
+  ASSERT_EQUAL(Matrix_width(mat), width);
 
   delete mat; // delete the Matrix
 }
@@ -233,10 +233,10 @@ TEST(testHeightBasic)
   const int width = 3;
   const int height = 5;
   const int value = 42;
-  Matrix_init(mat, 3, 5);
+  Matrix_init(mat, width, height);
   Matrix_fill(mat, value);
 
-  ASSERT_EQUAL(Matrix_width(mat), height);
+  ASSERT_EQUAL(Matrix_height(mat), height);
 
   delete mat; // delete the Matrix
 }
