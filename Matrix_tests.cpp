@@ -4,6 +4,7 @@
 #include "Matrix_test_helpers.h"
 #include "unit_test_framework.h"
 #include "iostream"
+#include "string"
 
 using namespace std;
 
@@ -209,6 +210,37 @@ TEST(testMaxNegative)
   delete mat;
 }
 
+TEST(testWidthBasic)
+{
+
+  Matrix *mat = new Matrix; // create a Matrix in dynamic memory
+
+  const int width = 3;
+  const int height = 5;
+  const int value = 42;
+  Matrix_init(mat, 3, 5);
+  Matrix_fill(mat, value);
+
+  ASSERT_EQUAL(Matrix_width(mat), 3);
+
+  delete mat; // delete the Matrix
+}
+
+TEST(testHeightBasic)
+{
+  Matrix *mat = new Matrix; // create a Matrix in dynamic memory
+
+  const int width = 3;
+  const int height = 5;
+  const int value = 42;
+  Matrix_init(mat, 3, 5);
+  Matrix_fill(mat, value);
+
+  ASSERT_EQUAL(Matrix_width(mat), height);
+
+  delete mat; // delete the Matrix
+}
+
 // // how would this work with autograder?
 TEST(testMaxTwoMax)
 {
@@ -309,6 +341,102 @@ TEST(testMatrixMinValRowSameRange)
   *Matrix_at(mat, 3, colVal) = min;
   *Matrix_at(mat, 3, colVal + 1) = min;
   ASSERT_EQUAL(Matrix_column_of_min_value_in_row(mat, 3, 18, 22), colVal);
+  delete mat;
+}
+
+// test matrix fill 1x1
+TEST(testMatrxFill1xI)
+{
+  Matrix *mat = new Matrix;
+  int w = 1, h = 1, val = 1;
+  Matrix_init(mat, w, h);
+  Matrix_fill(mat, val);
+  ASSERT_EQUAL(*Matrix_at(mat, 0, 0), val);
+  Matrix_fill(mat, 2);
+  ASSERT_EQUAL(*Matrix_at(mat, 0, 0), 2);
+  delete mat;
+}
+
+TEST(testMatrixFill1x3)
+{
+  Matrix *mat = new Matrix;
+  int w = 3, h = 1, val = 1;
+  Matrix_init(mat, w, h);
+  Matrix_fill(mat, val);
+  for (int c = 0; c < w; c++)
+  {
+    ASSERT_EQUAL(*Matrix_at(mat, 0, c), val);
+  }
+}
+
+TEST(testMatrixFill3x1)
+{
+  Matrix *mat = new Matrix;
+  int w = 1, h = 3, val = 1;
+  Matrix_init(mat, w, h);
+  Matrix_fill(mat, val);
+  for (int r = 0; r < h; r++)
+  {
+    ASSERT_EQUAL(*Matrix_at(mat, r, 0), val);
+  }
+}
+
+// helps with using image print
+TEST(testMatrixPrint)
+{
+  Matrix *mat = new Matrix;
+  int width = 2;
+  int height = 2;
+  int value = 1;
+  Matrix_init(mat, width, height);
+  Matrix_fill(mat, value);
+
+  string correctString = "";
+  correctString += to_string(width) + " " + to_string(height) + '\n';
+  for (int c = 0; c < width; c++)
+  {
+    for (int r = 0; r < height; r++)
+    {
+      correctString += to_string(*Matrix_at(mat, r, c)) + ' ';
+    }
+    correctString += "\n";
+  }
+  cout << correctString;
+  ostringstream os;
+
+  // ostream os;
+  Matrix_print(mat, os);
+
+  // ASSERT_EQUAL(os, )
+  ASSERT_EQUAL(os.str(), correctString);
+}
+
+// basic
+TEST(testMatrixRow)
+{
+  Matrix *mat = new Matrix;
+  const int width = 3;
+  const int height = 5;
+  const int value = 42;
+  Matrix_init(mat, width, height);
+  Matrix_fill(mat, value);
+  *Matrix_at(mat, 1, 2) = 1;
+  int *ptr = Matrix_at(mat, 1, 2);
+  ASSERT_EQUAL(Matrix_row(mat, ptr), 1);
+  delete mat;
+}
+
+TEST(testMatrixCol)
+{
+  Matrix *mat = new Matrix;
+  const int width = 3;
+  const int height = 5;
+  const int value = 42;
+  Matrix_init(mat, width, height);
+  Matrix_fill(mat, value);
+  *Matrix_at(mat, 1, 2) = 1;
+  int *ptr = Matrix_at(mat, 1, 2);
+  ASSERT_EQUAL(Matrix_column(mat, ptr), 2);
   delete mat;
 }
 
