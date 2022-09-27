@@ -38,20 +38,24 @@ void Image_init(Image* img, std::istream& is) {
   // reads the first line of the ppm file which is the file type
   getline(is, filetype);
   is >> width >> height;
-  
+  // converts the width and height which is stored as a string to
+  // an int and stores it in the image stuct
   img->width = stoi(width);
   img->height = stoi(height);
+  // reads in rgb max value
   getline(is, rgbMax);
   
   Matrix_init(&(img->red_channel), img->width, img->height);
   Matrix_init(&(img->green_channel), img->width, img->height);
   Matrix_init(&(img->blue_channel), img->width, img->height);
-  // test if while loops works
-  while (is >> rVal >> gVal >> bVal) {
-    // miles finish this you said it would take you 5
-    // minutes it was soooo easy
-    // just read in each rgb value into redchannel greenchannel 
-    // bluechannel respectivly
+  // Test if whitespace is skipped over
+  for (int row = 0; row < img->height; row++) {
+    for (int col = 0; col < img->width; col++) {
+      is >> rVal >> gVal >> bVal;
+      *(Matrix_at(&(img->red_channel), row, col)) = stoi(rVal);
+      *(Matrix_at(&(img->green_channel), row, col)) = stoi(gVal);
+      *(Matrix_at(&(img->blue_channel), row, col)) = stoi(bVal);
+    }
   }
 
 }
@@ -70,6 +74,7 @@ void Image_init(Image* img, std::istream& is) {
 //           "extra" space at the end of each line. See the project spec
 //           for an example.
 void Image_print(const Image* img, std::ostream& os) {
+  // prints header info of ppm file
   os << "P3" << endl;
   os << Image_width(img) << " " << Image_height(img) << endl;
   os << "255" << endl;
@@ -86,6 +91,7 @@ void Image_print(const Image* img, std::ostream& os) {
     }
     
   }
+  os << endl;
 }
 
 // REQUIRES: img points to a valid Image
@@ -110,7 +116,6 @@ Pixel Image_get_pixel(const Image* img, int row, int column) {
   int gVal;
   int bVal;
   rVal = *(Matrix_at(&(img->red_channel), row, column));
-  // finish... what pixel do I aasign if I cannot create one
   p.r = rVal;
   gVal = *(Matrix_at(&(img->green_channel), row, column));
   p.g = gVal;
