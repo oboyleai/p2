@@ -89,8 +89,25 @@ static int squared_difference(Pixel p1, Pixel p2) {
 //           image is computed and written into it.
 //           See the project spec for details on computing the energy matrix.
 void compute_energy_matrix(const Image* img, Matrix* energy) {
-  assert(false); // TODO Replace with your implementation!
-  assert(squared_difference(Pixel(), Pixel())); // TODO delete me, this is here to make it compile
+  // creates and fills energy matrix
+  Matrix_init(energy, Image_width(img), Image_height(img));
+  Matrix_fill(energy, 0);
+  int highestEnergy = 0;
+  // loops through the inner layers of image
+  for (int row = 1; row < Image_height(img) - 1; row++) {
+    for (int col = 1; col < Image_width(img) - 1; col ++) {
+      int pxlEnergy;
+      // calculates the pixel energy using the given formula
+      pxlEnergy = squared_difference(Image_get_pixel(img, row--, col), Image_get_pixel(img, row++, col));
+      pxlEnergy += squared_difference(Image_get_pixel(img, row, col--), Image_get_pixel(img, row, col++));
+      *(Matrix_at(energy, row, col)) = pxlEnergy;
+      // tracks the highest energy pixel to fill border with
+      if (pxlEnergy > highestEnergy) {
+        highestEnergy = pxlEnergy;
+      }
+    }
+  }
+  Matrix_fill_border(energy, highestEnergy);
 }
 
 
@@ -104,7 +121,31 @@ void compute_energy_matrix(const Image* img, Matrix* energy) {
 //           computed and written into it.
 //           See the project spec for details on computing the cost matrix.
 void compute_vertical_cost_matrix(const Matrix* energy, Matrix *cost) {
-  assert(false); // TODO Replace with your implementation!
+  // initializes cost matrix and sets the first row
+  Matrix_init(cost, Matrix_width(energy), Matrix_height(energy));
+  for (int col = 0; col < Matrix_width(cost); col++) {
+    *(Matrix_at(cost, 0, col)) = *(Matrix_at(energy, 0, col));
+  }
+  for (int row = 1; row < Matrix_height(cost); row++) {
+    for (int col = 0; col < Matrix_width(cost); col++) {
+      int pxlCost;
+      // if statements to make sure not to access outside of the bounds of cost
+      // and then calculates the cost of each pixel
+      if (col = 0) {
+        pxlCost = *(Matrix_at(energy, row, col)) + Matrix_min_value_in_row(cost, row - 1, col, col + 1);
+      }
+      else if (col > 0 && col < Matrix_width(cost) - 1) {
+        pxlCost = *(Matrix_at(energy, row, col)) + Matrix_min_value_in_row(cost, row - 1, col - 1, col + 1);
+      }
+      else {
+        pxlCost = *(Matrix_at(energy, row, col)) + Matrix_min_value_in_row(cost, row - 1,col - 1, col);
+      }
+      //sets cost of each pixel
+      *(Matrix_at(cost, row, col)) = pxlCost;
+    }
+
+  }
+
 }
 
 
