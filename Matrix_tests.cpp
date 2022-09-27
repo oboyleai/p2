@@ -65,19 +65,12 @@ TEST(testFillBorder1x1)
   const int height = 1;
   const int valFill = 40, valInitial = 1;
   Matrix_init(mat, width, height);
-  cout << Matrix_width(mat) << endl;
   Matrix_fill(mat, valInitial);
   Matrix_fill_border(mat, valFill);
   ASSERT_EQUAL(*Matrix_at(mat, 0, 0), valFill);
   delete mat;
 }
 
-void printHelp(Matrix *mat, int r, int c)
-{
-  cout << "(" << r << ", " << c << ")"
-       << ": " << *Matrix_at(mat, r, c) << endl;
-}
-// maybe need test case that does 5x4 and 4x5??
 TEST(testFillBorder4by4)
 {
   Matrix *mat = new Matrix;
@@ -127,7 +120,6 @@ TEST(testFillBorder1x4)
   Matrix_fill_border(mat, valFill);
   for (int r = 0; r < h; r++)
   {
-    // printHelp(mat, r, 0);
     ASSERT_EQUAL(*Matrix_at(mat, r, 0), valFill);
   }
   delete mat;
@@ -193,7 +185,6 @@ TEST(testMaxBasic)
   Matrix_fill(mat, 0);
   int max = 1;
   *Matrix_at(mat, 20, 20) = max;
-  // printHelp(mat, 20, 20);
   ASSERT_EQUAL(Matrix_max(mat), max);
   delete mat;
 }
@@ -267,7 +258,6 @@ TEST(testColumnMinValRowBasic)
   int min = -1;
   int colVal = 20;
   *Matrix_at(mat, 0, colVal) = min;
-  // printHelp(mat, 0, colVal);
   ASSERT_EQUAL(Matrix_column_of_min_value_in_row(mat, 0, 0, 50), colVal);
   delete mat;
 }
@@ -401,7 +391,6 @@ TEST(testMatrixPrint)
     }
     correctString += "\n";
   }
-  cout << correctString;
   ostringstream os;
 
   // ostream os;

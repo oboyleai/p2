@@ -209,8 +209,6 @@ int Matrix_column_of_min_value_in_row(const Matrix *mat, int row,
   const int *currentMin = mat->data;
   for (int col = column_start; col < column_end; col++)
   {
-    cout << "(" << row << ", " << col << ")"
-         << ": " << *Matrix_at(mat, row, col) << endl;
     if (*Matrix_at(mat, row, col) < *currentMin)
     {
       currentMin = Matrix_at(mat, row, col);
@@ -234,12 +232,8 @@ int Matrix_min_value_in_row(const Matrix *mat, int row,
 
   for (int col = column_start; col < column_end; col++)
   {
-
-    // cout << "(" << row << ", " << col << ")"
-    //      << ": " << *Matrix_at(mat, row, col) << "current min: " << *currentMin << endl;
     if (*Matrix_at(mat, row, col) < *currentMin)
     {
-
       currentMin = Matrix_at(mat, row, col);
     }
   }
