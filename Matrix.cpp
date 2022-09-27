@@ -31,8 +31,9 @@ void Matrix_print(const Matrix *mat, std::ostream &os)
   {
     for (int col = 0; col < mat->width; col++)
     {
-      os << *(Matrix_at(mat, row, col)) << " " << endl;
+      os << *(Matrix_at(mat, row, col)) << " ";
     }
+    os << endl;
   }
 }
 
