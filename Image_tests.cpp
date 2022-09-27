@@ -137,7 +137,7 @@ TEST(testImageFill1x1)
 
 // osstream init test using image equals
 
-TEST(testImageInitStream)
+TEST(testImageInitStreamNormal)
 {
   istringstream is;
   Image *img = new Image;
@@ -151,5 +151,20 @@ TEST(testImageInitStream)
   delete img;
 }
 // large data size tests?
+
+TEST(testImageInitStreamTerribleInput)
+{
+  istringstream is;
+  string terribleInput = "P3 2 \n2 255 123\n 0 36\t255 200\n8 147\t99 68\t\t\t\t3 164 202";
+  Image *img = new Image;
+  string perfectImageString =
+      "P3\n2 2\n255\n123 0 36 255 200 8 \n147 99 68 3 164 202 \n";
+  is.str(terribleInput);
+  Image_init(img, is);
+  ostringstream os;
+  Image_print(img, os);
+  ASSERT_EQUAL(os.str(), perfectImageString);
+  delete img;
+}
 
 TEST_MAIN() // Do NOT put a semicolon here
