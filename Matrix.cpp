@@ -205,8 +205,9 @@ int Matrix_max(const Matrix *mat)
 int Matrix_column_of_min_value_in_row(const Matrix *mat, int row,
                                       int column_start, int column_end)
 {
-  int correctCol;
-  const int *currentMin = mat->data;
+  const int *currentMin = Matrix_at(mat, row, column_start);
+  int correctCol = column_start;
+
   for (int col = column_start; col < column_end; col++)
   {
     if (*Matrix_at(mat, row, col) < *currentMin)

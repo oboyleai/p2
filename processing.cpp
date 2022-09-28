@@ -126,8 +126,6 @@ void compute_energy_matrix(const Image *img, Matrix *energy)
         highestEnergy = pxlEnergy;
       }
     }
-
-    Matrix_print(energy, cout);
   }
 
   Matrix_fill_border(energy, highestEnergy);
@@ -167,11 +165,14 @@ void compute_vertical_cost_matrix(const Matrix *energy, Matrix *cost)
       }
       else if (col > 0 && col < Matrix_width(cost) - 1)
       {
-        pxlCost = *(Matrix_at(energy, row, col)) + Matrix_min_value_in_row(cost, row - 1, col - 1, col + 2);
+        pxlCost = *(Matrix_at(energy, row, col)) +
+                  Matrix_min_value_in_row(
+                      cost, row - 1, col - 1, col + 2);
       }
       else
       {
-        pxlCost = *(Matrix_at(energy, row, col)) + Matrix_min_value_in_row(cost, row - 1, col - 1, col + 1);
+        pxlCost = *(Matrix_at(energy, row, col)) +
+                  Matrix_min_value_in_row(cost, row - 1, col - 1, col + 1);
       }
       // sets cost of each pixel
       // if (row == 2 && col == 0)
@@ -202,22 +203,28 @@ void compute_vertical_cost_matrix(const Matrix *energy, Matrix *cost)
 void find_minimal_vertical_seam(const Matrix *cost, int seam[])
 {
   // finds start of the seam
-  seam[Matrix_height(cost) - 1] = Matrix_column_of_min_value_in_row(cost, Matrix_height(cost) - 1, 0, Matrix_width(cost));
-  // MAY NEED TO BE >= IN CONDITION
-  for (int row = Matrix_height(cost) - 2; row > 0; row--)
+  seam[Matrix_height(cost) - 1] = Matrix_column_of_min_value_in_row(
+      cost, Matrix_height(cost) - 1, 0, Matrix_width(cost) - 1);
+  // MAY NEED TO BE >= IN CONDITION YOOOOOOOOOOOOOOO
+  for (int row = Matrix_height(cost) - 2; row >= 0; row--)
   {
 
-    if (seam[row] == 0)
+    if (seam[row + 1] == 0)
     {
-      seam[row] = Matrix_column_of_min_value_in_row(cost, row, seam[row], seam[row] + 1);
+      seam[row] = Matrix_column_of_min_value_in_row(cost, row, 0, 2);
     }
-    else if (seam[row] == Matrix_width(cost) - 1)
+    else if (seam[row + 1] == Matrix_width(cost) - 1)
     {
-      seam[row] = Matrix_column_of_min_value_in_row(cost, row, seam[row] - 1, seam[row]);
+      seam[row] = Matrix_column_of_min_value_in_row(
+          cost,
+          row, Matrix_width(cost) - 2, Matrix_width(cost));
     }
     else
     {
-      seam[row] = Matrix_column_of_min_value_in_row(cost, row, seam[row] - 1, seam[row] + 1);
+      seam[row] = Matrix_column_of_min_value_in_row(
+          cost,
+          row,
+          seam[row + 1] - 1, seam[row + 1] + 2);
     }
   }
 }
@@ -238,10 +245,11 @@ void remove_vertical_seam(Image *img, const int seam[])
 {
   int indexChange = 0;
   Image *newImg = new Image;
-  Image_init(newImg, Image_height(img), Image_width(img) - 1);
+  Image_init(newImg, Image_width(img) - 1, Image_height(img));
   for (int row = 0; row < Image_height(img); row++)
   {
-    for (int col = 0; col < Image_width(img) - 1; col++)
+    indexChange = 0;
+    for (int col = 0; col < Image_width(img); col++)
     {
       if (seam[row] != col)
       {
@@ -254,7 +262,26 @@ void remove_vertical_seam(Image *img, const int seam[])
       }
     }
   }
-  img = newImg;
+  *img = *newImg;
+  delete newImg;
+
+  // Image *newImg = new Image;
+  // Image_init(newImg, Image_width(img) - 1, Image_height(img));
+  // for (int row = 0; row < Image_height(img); row++)
+  // {
+
+  //   for (int col = 0; col < seam[row]; col++)
+  //   {
+  //     Image_set_pixel(newImg, row, col, Image_get_pixel(img, row, seam[row]));
+  //   }
+  //   // skips over the column in seam[row]
+  //   for (int col = seam[row] + 1; col < Image_width(img) - 1; col++)
+  //   {
+  //     Image_set_pixel(newImg, row, col, Image_get_pixel(img, row, seam[row]));
+  //   }
+  // }
+  // *img = *newImg;
+  // delete newImg;
 }
 
 // REQUIRES: img points to a valid Image
