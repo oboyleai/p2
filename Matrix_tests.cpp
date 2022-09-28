@@ -341,6 +341,7 @@ TEST(testMatrixFill1x3)
   {
     ASSERT_EQUAL(*Matrix_at(mat, 0, c), val);
   }
+  delete mat;
 }
 
 TEST(testMatrixFill3x1)
@@ -353,6 +354,7 @@ TEST(testMatrixFill3x1)
   {
     ASSERT_EQUAL(*Matrix_at(mat, r, 0), val);
   }
+  delete mat;
 }
 
 // helps with using image print
@@ -380,6 +382,7 @@ TEST(testMatrixPrint)
   ostringstream os;
   Matrix_print(mat, os);
   ASSERT_EQUAL(os.str(), correctString);
+  delete mat;
 }
 
 // basic
