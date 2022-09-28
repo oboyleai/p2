@@ -155,11 +155,15 @@ void compute_vertical_cost_matrix(const Matrix *energy, Matrix *cost)
     for (int col = 0; col < Matrix_width(cost); col++)
     {
       int pxlCost;
+
       // if statements to make sure not to access outside of the bounds of cost
       // and then calculates the cost of each pixel
       if (col == 0)
       {
-        pxlCost = *(Matrix_at(energy, row, col)) + Matrix_min_value_in_row(cost, row - 1, col, col + 1);
+
+        int minVal = Matrix_min_value_in_row(cost, row - 1, col, col + 1);
+
+        pxlCost = *(Matrix_at(energy, row, col)) + minVal;
       }
       else if (col > 0 && col < Matrix_width(cost) - 1)
       {
@@ -170,6 +174,11 @@ void compute_vertical_cost_matrix(const Matrix *energy, Matrix *cost)
         pxlCost = *(Matrix_at(energy, row, col)) + Matrix_min_value_in_row(cost, row - 1, col - 1, col);
       }
       // sets cost of each pixel
+      // if (row == 2 && col == 0)
+      // {
+      //   cout << *Matrix_at(cost, row - 1, col + 1) << "\t" << *Matrix_at(cost, row - 1, col) << endl;
+      //   cout << Matrix_min_value_in_row(cost, row - 1, col, col + 1) << endl;
+      // }
       *(Matrix_at(cost, row, col)) = pxlCost;
     }
   }

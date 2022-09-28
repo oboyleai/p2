@@ -152,7 +152,7 @@ void Matrix_fill_border(Matrix *mat, int value)
   // fills bottom row
   for (int col = 0; col < mat->width; col++)
   {
-    *(Matrix_at(mat, Matrix_height(mat), col) - 1) = value;
+    *(Matrix_at(mat, Matrix_height(mat) - 1, col)) = value;
   }
   // fills first column
   for (int row = 0; row < mat->height; row++)
@@ -224,17 +224,30 @@ int Matrix_column_of_min_value_in_row(const Matrix *mat, int row,
 // EFFECTS:  Returns the minimal value in a particular region. The region
 //           is defined as elements in the given row and between
 //           column_start (inclusive) and column_end (exclusive).
+
+// there is something fucking wrong with this
 int Matrix_min_value_in_row(const Matrix *mat, int row,
                             int column_start, int column_end)
 {
-  const int *currentMin = mat->data;
+  int minTest = *Matrix_at(mat, row, column_start);
+  // const int *currentMin = Matrix_at(mat, row, column_start);
 
-  for (int col = column_start; col < column_end; col++)
+  int currVal;
+
+  // cout << endl
+  //      << row << column_start << endl
+  //      << row << column_end << endl;
+
+  for (int col = column_start; col <= column_end; col++)
   {
-    if (*Matrix_at(mat, row, col) < *currentMin)
+    // cout << *Matrix_at(mat, row, col);
+    currVal = *Matrix_at(mat, row, col);
+
+    // cout << currVal << endl;
+    if (currVal < minTest)
     {
-      currentMin = Matrix_at(mat, row, col);
+      minTest = currVal;
     }
   }
-  return *currentMin;
+  return minTest;
 }
