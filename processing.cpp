@@ -91,6 +91,9 @@ static int squared_difference(Pixel p1, Pixel p2)
 //           size as the given Image, and then the energy matrix for that
 //           image is computed and written into it.
 //           See the project spec for details on computing the energy matrix.
+
+// I don't know whats wrong with this
+
 void compute_energy_matrix(const Image *img, Matrix *energy)
 {
   // creates and fills energy matrix
@@ -98,21 +101,24 @@ void compute_energy_matrix(const Image *img, Matrix *energy)
   Matrix_fill(energy, 0);
   int highestEnergy = 0;
   // loops through the inner layers of image
-  int correctRow, correctCol;
   for (int row = 1; row < Image_height(img) - 1; row++)
   {
     for (int col = 1; col < Image_width(img) - 1; col++)
     {
+      // Pixel north, south, east, west;
       int pxlEnergy;
-
-      // usage of these variables prevents an unsequenced modification/access error
-      correctRow = row - 1;
-      correctCol = col - 1;
 
       // calculates the pixel energy using the given formula
 
-      pxlEnergy = squared_difference(Image_get_pixel(img, correctRow, col), Image_get_pixel(img, row++, col));
-      pxlEnergy += squared_difference(Image_get_pixel(img, row, correctCol), Image_get_pixel(img, row, col++));
+      // north = Image_get_pixel(img, row, col + 1);
+      // south = Image_get_pixel(img, row, col - 1);
+      // west = Image_get_pixel(img, row - 1, col);
+      // east = Image_get_pixel(img, row + 1, col);
+
+      pxlEnergy = squared_difference(Image_get_pixel(img, row, col + 1),
+                                     Image_get_pixel(img, row, col - 1));
+      pxlEnergy += squared_difference(Image_get_pixel(img, row - 1, col),
+                                      Image_get_pixel(img, row + 1, col));
       *(Matrix_at(energy, row, col)) = pxlEnergy;
       // tracks the highest energy pixel to fill border with
       if (pxlEnergy > highestEnergy)
@@ -120,7 +126,10 @@ void compute_energy_matrix(const Image *img, Matrix *energy)
         highestEnergy = pxlEnergy;
       }
     }
+
+    Matrix_print(energy, cout);
   }
+
   Matrix_fill_border(energy, highestEnergy);
 }
 
