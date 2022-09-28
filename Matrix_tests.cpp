@@ -304,22 +304,11 @@ TEST(testMinValInRowNextRange)
   int min = 1;
   int colVal = 21;
   *Matrix_at(mat, 2, colVal) = min;
-  ASSERT_EQUAL(Matrix_min_value_in_row(mat, 2, 20, 21), min);
+  ASSERT_EQUAL(Matrix_min_value_in_row(mat, 2, 20, 22), min);
   delete mat;
 }
 
-TEST(testMinValInRowOutBounds)
-{
-  Matrix *mat = new Matrix;
-  Matrix_init(mat, 50, 50);
-  int fillVal = 10;
-  Matrix_fill(mat, fillVal);
-  int min = 1;
-  int colVal = 21;
-  *Matrix_at(mat, 2, colVal) = min;
-  ASSERT_EQUAL(Matrix_min_value_in_row(mat, 2, 49, 50), min);
-  delete mat;
-}
+// test at 50
 
 TEST(testMinValInRowSameRange)
 {
@@ -343,7 +332,7 @@ TEST(testMinValInRowNoAccessData)
   int min = 1;
   int colVal = 3;
   *Matrix_at(mat, 2, colVal) = min;
-  ASSERT_EQUAL(Matrix_min_value_in_row(mat, 2, 0, colVal), min);
+  ASSERT_EQUAL(Matrix_min_value_in_row(mat, 2, 0, colVal + 1), min);
   delete mat;
 }
 

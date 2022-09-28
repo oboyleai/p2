@@ -161,17 +161,17 @@ void compute_vertical_cost_matrix(const Matrix *energy, Matrix *cost)
       if (col == 0)
       {
 
-        int minVal = Matrix_min_value_in_row(cost, row - 1, col, col + 1);
+        int minVal = Matrix_min_value_in_row(cost, row - 1, col, col + 2);
 
         pxlCost = *(Matrix_at(energy, row, col)) + minVal;
       }
       else if (col > 0 && col < Matrix_width(cost) - 1)
       {
-        pxlCost = *(Matrix_at(energy, row, col)) + Matrix_min_value_in_row(cost, row - 1, col - 1, col + 1);
+        pxlCost = *(Matrix_at(energy, row, col)) + Matrix_min_value_in_row(cost, row - 1, col - 1, col + 2);
       }
       else
       {
-        pxlCost = *(Matrix_at(energy, row, col)) + Matrix_min_value_in_row(cost, row - 1, col - 1, col);
+        pxlCost = *(Matrix_at(energy, row, col)) + Matrix_min_value_in_row(cost, row - 1, col - 1, col + 1);
       }
       // sets cost of each pixel
       // if (row == 2 && col == 0)

@@ -3,6 +3,7 @@
 #include <cassert>
 #include <iostream>
 #include "Matrix.h"
+
 using namespace std;
 // REQUIRES: mat points to a Matrix
 //           0 < width && width <= MAX_MATRIX_WIDTH
@@ -229,25 +230,14 @@ int Matrix_column_of_min_value_in_row(const Matrix *mat, int row,
 int Matrix_min_value_in_row(const Matrix *mat, int row,
                             int column_start, int column_end)
 {
-  int minTest = *Matrix_at(mat, row, column_start);
-  // const int *currentMin = Matrix_at(mat, row, column_start);
+  const int *currentMin = Matrix_at(mat, row, column_start);
 
-  int currVal;
-
-  // cout << endl
-  //      << row << column_start << endl
-  //      << row << column_end << endl;
-
-  for (int col = column_start; col <= column_end; col++)
+  for (int col = column_start; col < column_end; col++)
   {
-    // cout << *Matrix_at(mat, row, col);
-    currVal = *Matrix_at(mat, row, col);
-
-    // cout << currVal << endl;
-    if (currVal < minTest)
+    if (*Matrix_at(mat, row, col) < *currentMin)
     {
-      minTest = currVal;
+      currentMin = Matrix_at(mat, row, col);
     }
   }
-  return minTest;
+  return *currentMin;
 }
